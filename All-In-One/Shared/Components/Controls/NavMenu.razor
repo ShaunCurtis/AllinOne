@@ -1,0 +1,65 @@
+﻿@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Routing
+@using AllinOne.Shared.Components
+
+@namespace AllinOne.Shared.Components
+
+<div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand" href="">@navTitle</a>
+    <button class="navbar-toggler" @onclick="ToggleNavMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <ul class="nav flex-column">
+        <li class="nav-item px-3">
+            @if (IsWASM)
+            {
+                <NavLink class="nav-link" href="/">
+                    <span class="oi oi-browser" aria-hidden="true"></span> Switch to Server
+                </NavLink>
+            }
+            else
+            {
+                <NavLink class="nav-link" href="wasm.html">
+                    <span class="oi oi-browser" aria-hidden="true"></span> Switch to WASM
+                </NavLink>
+
+            }
+        </li>
+        <li class="nav-item px-3">
+            <ViewLink class="nav-link" ViewType="typeof(Index)">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </ViewLink>
+        </li>
+        <li class="nav-item px-3">
+            <ViewLink class="nav-link" ViewType="typeof(Counter)">
+                <span class="oi oi-home" aria-hidden="true"></span> Counter
+            </ViewLink>
+        </li>
+        <li class="nav-item px-3">
+            <ViewLink class="nav-link" ViewType="typeof(FetchData)">
+                <span class="oi oi-home" aria-hidden="true"></span> Fetch Data
+            </ViewLink>
+        </li>
+    </ul>
+</div>
+
+@code {
+
+    [Parameter]
+    public bool IsWASM { get; set; }
+
+    private string navTitle => IsWASM ? "All-in-One WASM" : "All-in-One Server";
+
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}
