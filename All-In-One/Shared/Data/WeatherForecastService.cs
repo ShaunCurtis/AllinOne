@@ -25,10 +25,7 @@ namespace AllinOne.Shared.Data
             }).ToArray();
         }
 
-        public virtual Task<WeatherForecast[]> GetForecastAsync()
-        {
-            return Task.FromResult(Forecasts);
-        }
+        public virtual Task<WeatherForecast[]> GetForecastAsync() => Task.FromResult(Forecasts);
 
     }
 }
