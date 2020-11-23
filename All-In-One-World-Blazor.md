@@ -140,8 +140,9 @@ Your Server project should now look like this (a program class):
 
 ![server project](https://raw.githubusercontent.com/ShaunCurtis/AllinOne/master/images/Server-Project.png?raw=true)
 
+## The Shared Project Code
 
-## Data and Services
+### Data and Services
 
 The first challenge is how to handle data access in `Fetchdata`.  The Server version just makes it up, the WASM version makes an API call. The API code makes it up.  We need a standardised interface for `Fetchdata`.
 
@@ -153,14 +154,14 @@ We solve this by using Interface dependency injection:
 
 This may be overcomplicated for here, but the purpose of this article is to solve the problems, not step round them.
 
-### WeatherForecast.cs
+#### WeatherForecast.cs
 
 ```c#
 // sort the namespace
 namespace AllinOne.Shared.Data
 ```
 
-### IWeatherForecastService.cs
+#### IWeatherForecastService.cs
 
 Replace the template code with:
 
@@ -176,7 +177,7 @@ namespace AllinOne.Shared.Data
 }
 ```
 
-### WeatherForecastService
+#### WeatherForecastService
 
 Replace the template code with:
 
@@ -217,7 +218,7 @@ namespace AllinOne.Shared.Data
 }
 ```
 
-### WeatherForecastWASMService.cs
+#### WeatherForecastWASMService.cs
 
 Replace the template code with:
 
@@ -569,9 +570,9 @@ Update *WASM.razor* replacing the default code with:
 }
 ```
 
-### Server Project
+## Server Project Code
 
-#### Pages
+### Pages
 
 Copy the following code into *_Host.cshtml* to *Pages* in the Server project.  This is the home page for the Server SPA.
 
@@ -613,32 +614,9 @@ Copy the following code into *_Host.cshtml* to *Pages* in the Server project.  T
 </body>
 </html>
 ```
-#### Startup Files
+### Startup.cs
 
-Update *Program* in the Client project
-
-```c#
-// add reference 
-using AllinOne.Shared.Data;
-
-public class Program
-{
-    public static async Task Main(string[] args)
-    {
-        var builder = WebAssemblyHostBuilder.CreateDefault(args);
-        // Sets the component to substitute into "app". 
-        builder.RootComponents.Add < AllinOne.Shared.Components.WASM>("app");
-
-        builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-        // add the WASM version of the weather dataservice
-        builder.Services.AddScoped<IWeatherForecastService, WeatherForecastWASMService>();
-
-        await builder.Build().RunAsync();
-    }
-}
-```
-
-Update *Startup* in the Server project
+Update *Startup*
 
 ```c#
 // add reference 
@@ -686,6 +664,34 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     });
 }
 ```
+
+## Client Project Code
+
+### Program.cs
+
+Update *Program*
+
+```c#
+// add reference 
+using AllinOne.Shared.Data;
+
+public class Program
+{
+    public static async Task Main(string[] args)
+    {
+        var builder = WebAssemblyHostBuilder.CreateDefault(args);
+        // Sets the component to substitute into "app". 
+        builder.RootComponents.Add < AllinOne.Shared.Components.WASM>("app");
+
+        builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+        // add the WASM version of the weather dataservice
+        builder.Services.AddScoped<IWeatherForecastService, WeatherForecastWASMService>();
+
+        await builder.Build().RunAsync();
+    }
+}
+```
+
 ## Final Clean Up
 
 Clean up the project files.  Depending on how you moved the files around there may be some Folder/File artifacts left in the project files.  Most are harmless, but some can cause build problems (duplicate names).
