@@ -1,4 +1,4 @@
-# Building a site that Delivers Blazor Server and WASM
+# Building a Site that Delivers Blazor Server and WASM
 
 ## Overview
 
@@ -25,7 +25,9 @@ How do we structure a single website, with paths and access to shared functional
 
 ## Code and Examples
 
-A version of the standard Blazor site implementing modal dialogs is [here at CEC.Blazor.Examples](https://github.com/ShaunCurtis/CEC.Blazor.Examples).
+The Repo is [here at Github](https://github.com/ShaunCurtis/AllinOne).
+
+You can view the site on Azure [here at https://allinoneserver.azurewebsites.net/](https://allinoneserver.azurewebsites.net/)
 
 ## The Solution
 
