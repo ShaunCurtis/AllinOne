@@ -2,26 +2,30 @@
 
 ## Overview
 
-There are significant challenges to creating a combined Blazor WASM and Server application in the same solution, and running on the same web site.  This article examines those challenges, and shows how they can be overcome.
+This article looks at solving the challenges in creating a combined Blazor WASM and Server application - built in the same solution, and run on the same web site.
+
+Motivation - well it's got to be possible!
 
 ## The Challenges
 
-### Routing
+#### Routing
 
 The biggest, but not the most obvious is routing. If I go to https://mysite/weatherforecast/1 what do you do? Open it in WASM or Server?  You could use https://mysite/wasm/weatherforecast/1 but that's clunky, with different routing paths to hanlde different scenarios.  You quickly start trying to jump tho' hoops backwards.  So, what does routing actually do?
 
-1. You typically click on an `<a>` or call `NavigationManager` directly.  All paths lead to the Navigation Manager raising a navigation event.
-2. The Router is wired into the navigation event and gets called.
-3. It looks up the route in its routing table and finds the associated `IComponent` class.
-4. It re-renders itself (it's a component at the base of the RenderTree) using the *layout* specified, passing the layout the new component.
+1. Navigation happens typically by clicking on an `<a>` or call `NavigationManager` directly.  All paths lead to the Navigation Manager raising a navigation event.
+2. The Router wires itself into the `NavigationManager` navigation event and gets called.
+3. It looks up the route in its routing table (built by trawling the site for `@page` references) and matches the Url to it's associated `IComponent` class.
+4. It renders itself (it's a component at the base of the RenderTree so queues a render event on the Renderer) using the *layout* specified and passing the layout the new component.
 
-### Shared Code Base
+#### Shared Code Base
 
-The two applications need to share the same code base.  We don't want two copies of `App.razor`, `Index.razor`,...
+- How do we have one copy of `App.razor`, `Index.razor`,...  (We don't want duplicates)?
+- How do we fix the slightly different data access models used?
 
-### A Single Web Site that Switches between Applications
+#### A Single Web Site that Switches between Applications
 
-How do we structure a single website, with paths and access to shared functionality?  How do we separate loading of each application?
+- How do we structure a single website, with paths and access to shared functionality?  
+- How do we separate loading of each application?
 
 ## Code and Examples
 
@@ -41,7 +45,7 @@ We're going to re-structure the solution so:
 
 Your starting point looks like this.
 
-![client](/Images/Starting-Solution.png)
+![client](https://raw.githubusercontent.com/ShaunCurtis/AllinOne/master/images/Starting-Solution.png?raw=true)
 
 ## Shared Project
 
@@ -74,7 +78,7 @@ Open the Shared Project configuration files (double-click on the project title i
 
 Create the following folder structure in *Shared*.
 
-![Shared Folder Structure](\../../Images/shared-folders.png)
+![Shared Folder Structure](https://raw.githubusercontent.com/ShaunCurtis/AllinOne/master/images/shared-folders.png?raw=true)
 
 Move or create the following files in Controls:
 (all classes should be in the *solution*.Shared.Component namespace)
@@ -113,7 +117,7 @@ Move or create the following files in Data:
 
 Your Shared project should now look like this:
 
-![shared files](/Images/shared-files.png)
+![shared files](https://raw.githubusercontent.com/ShaunCurtis/AllinOne/master/images/shared-files.png?raw=true)
 
 ### Client
 
@@ -124,7 +128,7 @@ Your Shared project should now look like this:
 
 Your Client project should now look like this (a program class):
 
-![client project](/Images/Client-Project.png)
+![client project](https://raw.githubusercontent.com/ShaunCurtis/AllinOne/master/images/Client-Project.png?raw=true)
 
 ### Server
 
@@ -134,7 +138,7 @@ Your Client project should now look like this (a program class):
 
 Your Server project should now look like this (a program class):
 
-![server project](/Images/Server-Project.png)
+![server project](https://raw.githubusercontent.com/ShaunCurtis/AllinOne/master/images/Server-Project.png?raw=true)
 
 
 ## Data and Services
@@ -765,6 +769,10 @@ An example of a harmless one:
 ## Build and run the Solution
 
 That's it.  If you've done everything perfectly, and I've got everything right, you'll be able to build and run the project.  I've tested this set of instructions twice now, so I'm hoping I've not overlooked anything.  Comment and call me stupid if I have! 
+
+Your solution should look like this:
+
+![final solution](https://raw.githubusercontent.com/ShaunCurtis/AllinOne/master/images/Final-Solution.png?raw=true)
 
 Build errors will normally be because:
 
