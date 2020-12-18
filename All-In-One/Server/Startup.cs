@@ -28,6 +28,7 @@ namespace AllinOne.Server
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<IWeatherForecastService, WeatherForecastService>();
+            services.AddSingleton<CounterService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
