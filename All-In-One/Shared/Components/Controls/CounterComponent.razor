@@ -1,0 +1,50 @@
+﻿@namespace AllinOne.Shared.Components
+
+    <table class="border border-primary">
+        <tr>
+            <td class="text-nowrap">
+                <button type="button" class="btn @this.buttoncolor" @onclick="() => this.Service.IncrementCounter()">
+                    Add <span class="badge bg-secondary">@this.counter</span>
+                </button>
+            </td>
+            @if (ChildContent != null)
+            {
+                <td width="90%">
+                    @ChildContent
+                </td>
+            }
+        </tr>
+    </table>
+
+@code {
+
+    [Inject] public CounterService Service { get; set; }
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    [Parameter] public bool RegisterCounterChanged { get; set; }
+
+    [Parameter] public bool UseCascade { get; set; }
+
+    [Parameter] public bool UseCascadedService { get; set; }
+
+    [CascadingParameter(Name ="CascadedCounter")] public int cascadedcounter { get; set; }
+
+    [CascadingParameter(Name = "CascadedService")] public CounterService CascadedService { get; set; }
+
+    private string buttonclass => ChildContent != null ? "col-2" : "col";
+
+    private string buttoncolor => RegisterCounterChanged ? "btn-success" : UseCascade ? "btn-info" : UseCascadedService ? "btn-dark" : "btn-danger";
+
+    private int counter => this.UseCascade ? cascadedcounter : this.UseCascadedService ? CascadedService.Counter : this.Service.Counter;
+
+
+    protected override Task OnInitializedAsync()
+    {
+        if (this.RegisterCounterChanged) Service.CounterChanged += ReRender;
+        return base.OnInitializedAsync();
+    }
+
+    protected void ReRender(object sender, EventArgs e) => this.InvokeAsync(this.StateHasChanged);
+
+}

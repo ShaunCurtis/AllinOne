@@ -1,0 +1,33 @@
+﻿@inherits BaseCounter
+
+@namespace AllinOne.Shared.Components
+
+    <table class="border border-primary">
+        <tr>
+            <td class="text-nowrap">
+                <button type="button" class="btn @this.buttoncolor" @onclick="() => this.Service.IncrementCounter()">
+                    <span class="badge bg-light text-dark mx-1">@this.counter</span>@this.Name <span class="badge bg-dark text-white ml-1">@this.Service.Counter</span>
+                </button>
+            </td>
+            @if (ChildContent != null)
+            {
+                <td width="90%">
+                    @ChildContent
+                </td>
+            }
+        </tr>
+    </table>
+
+@code {
+
+    [CascadingParameter(Name ="CascadedCounter")] public int cascadedcounter { get; set; }
+
+    protected override string buttoncolor => "btn-danger";
+
+    protected override Task OnParametersSetAsync()
+    {
+        counter = cascadedcounter;
+        return Task.CompletedTask;
+    }
+
+}

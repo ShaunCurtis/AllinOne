@@ -1,19 +1,83 @@
 ﻿@using Microsoft.AspNetCore.Components
-@using Microsoft.AspNetCore.Components.Web
 @inherits ViewBase
 @namespace AllinOne.Shared.Components
 
 <h1>Counter</h1>
 
-<p>Current count: @currentCount</p>
+<table class="border border-primary">
+    <tr>
+        <td class="text-nowrap">
+            <button type="button" class="btn btn-primary" @onclick="() => this.Service.IncrementCounter()">
+                Root <span class="badge bg-light text-dark">@this.counter</span><span class="badge bg-dark text-white ml-1">@this.Service.Counter</span>
+            </button>
+        </td>
+        <td width="90%">
+            <CascadingValue Name="CascadedService" Value="this.Service">
+                <CascadingValue Name="CascadedCounter" Value="this.Service.Counter">
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+                    <BaseCounter Name="A">
+                        <BaseCounter Name="A.A">
+                            <BaseCounter Name="A.A.A"></BaseCounter>
+                            <BaseCounter Name="A.A.B"><Body>With Body Content</Body></BaseCounter>
+                        </BaseCounter>
+
+                        <BaseCounter Name="A.B">
+                            <BaseCounter Name="A.B.A">With Child Content</BaseCounter>
+                            <BaseCounter Name="A.B.B"></BaseCounter>
+                            <EventCounter Name="A.B.C">With Child Content</EventCounter>
+                            <EventCounter Name="A.B.D"></EventCounter>
+                        </BaseCounter>
+                    </BaseCounter>
+
+                    <BaseCounter Name="B">
+                        <EventCounter Name="B.A">
+                            <BaseCounter Name="B.A.A">With Child Content</BaseCounter>
+                            <BaseCounter Name="B.A.B"></BaseCounter>
+                        </EventCounter>
+                    </BaseCounter>
+
+                    <BaseCounter Name="C">
+                        <EventCounter Name="C.A">
+                            <BaseCounter Name="C.A.A"></BaseCounter>
+                        </EventCounter>
+                    </BaseCounter>
+
+                    <EventCounter Name="D">
+                        <BaseCounter Name="D.A">has content</BaseCounter>
+                    </EventCounter>
+
+                    <BaseCounter Name="E">
+                        <BaseCounter Name="E.A">
+                            <CascadedObjectCounter Name="E.A.A">With Child Content</CascadedObjectCounter>
+                            <CascadedObjectCounter Name="E.A.B"></CascadedObjectCounter>
+                            <CascadedValueCounter Name="E.A.C">With Child Content</CascadedValueCounter>
+                            <CascadedValueCounter Name="E.A.D"></CascadedValueCounter>
+                        </BaseCounter>
+
+                        <EventCounter Name="E.B">
+                            <CascadedValueCounter Name="E.B.A">With Child Content</CascadedValueCounter>
+                            <CascadedValueCounter Name="E.B.B"></CascadedValueCounter>
+                            <CascadedObjectCounter Name="E.B.C">With Child Content</CascadedObjectCounter>
+                            <CascadedObjectCounter Name="E.B.D"></CascadedObjectCounter>
+                        </EventCounter>
+                    </BaseCounter>
+
+                </CascadingValue>
+            </CascadingValue>
+        </td>
+    </tr>
+</table>
 
 @code {
-    private int currentCount = 0;
 
-    private void IncrementCount()
+    [Inject] public CounterService Service { get; set; }
+
+    protected virtual int counter { get; set; }
+
+    protected override Task OnParametersSetAsync()
     {
-        currentCount++;
+        counter = Service.Counter;
+        return Task.CompletedTask;
     }
+
 }
