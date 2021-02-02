@@ -6,6 +6,8 @@ This article looks at solving the challenges in creating a combined Blazor WASM 
 
 Motivation - well it's got to be possible!
 
+> The source code has been updated to Net5.  Though the changes are small, note that this article was written for the DotNetCore3.1. 
+
 ## The Challenges
 
 #### Routing
