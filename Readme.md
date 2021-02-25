@@ -1,3 +1,5 @@
+> This code has now been superceeded by [Hydra](https://github.com/ShaunCurtis/Hydra) and [CEC.Blazor.Examples](https://github.com/ShaunCurtis/CEC.Blazor.Examples)
+
 > The source code has been updated to Net5
 
 This repository is for an article describing how to build a Blazor Project that handles both Server and WASM on the same web site.
