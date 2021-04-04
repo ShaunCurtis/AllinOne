@@ -1,0 +1,24 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+    @*change class*@
+    <div class="@_sidebarCss">
+        <NavMenu />
+    </div>
+
+    <div class="main">
+        <div class="top-row px-4">
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+        </div>
+
+        <div class="content px-4">
+            @Body
+        </div>
+    </div>
+</div>
+
+@code {
+    [Inject] NavigationManager NavManager { get; set; }
+    private bool _isWasm => NavManager?.Uri.Contains("wasm", StringComparison.CurrentCultureIgnoreCase) ?? false;
+    private string _sidebarCss => _isWasm ? "sidebar sidebar-teal" : "sidebar sidebar-steel";
+}

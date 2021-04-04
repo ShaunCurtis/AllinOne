@@ -1,0 +1,5 @@
+﻿<StaticWebAssets Version="1.0">
+  <ContentRoot BasePath="wasm" Path="C:\Users\Shaun.Obsidian\source\repos\Blazor\Blazor\bin\Debug\net5.0\wwwroot\" />
+  <ContentRoot BasePath="wasm" Path="C:\Users\Shaun.Obsidian\source\repos\Blazor\Blazor\obj\Debug\net5.0\scopedcss\bundle\" />
+  <ContentRoot BasePath="wasm" Path="C:\Users\Shaun.Obsidian\source\repos\Blazor\Blazor\wwwroot\" />
+</StaticWebAssets>
